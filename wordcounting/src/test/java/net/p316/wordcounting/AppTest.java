@@ -1,4 +1,4 @@
-package net.p316.news.newscrawler;
+package net.p316.wordcounting;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
