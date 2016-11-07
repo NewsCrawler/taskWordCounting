@@ -71,11 +71,11 @@ public class MySQLConnector {
 		   conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		   
 		   stmt = conn.createStatement();
-
+		   // 데이터베이스 질의를 통해 원하는 테이블 스크랩 범위를 지정함
 		   String sql = "SELECT `title` FROM `nc_title`";
-		   
+		   // 질의 실행
 		   rs = stmt.executeQuery(sql);
-		   
+		   // 데이터베이스를 모두 읽어서 String에 저장(현재는 title)
 		   while(rs.next()){
 			   list.add(rs.getString("title"));
 		   }
