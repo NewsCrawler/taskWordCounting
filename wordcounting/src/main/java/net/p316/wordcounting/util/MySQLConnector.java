@@ -9,9 +9,9 @@ public class MySQLConnector {
    static final String DB_URL = "jdbc:mysql://news.p316.net/news_crawler";
    //string형 변수 DB_URL에 DB연동을 할 주소(URL)저장
    
-   static final String USER = "crawler";
+   static final String USER = "word";
    //String형 변수 USER에 아이디 crawler저장
-   static final String PASS = "4X\"Zd@JaTs\\Yk<c]";
+   static final String PASS = "s:7Nq*?2AEEQ~h+%";
    //String형 변수 PASS에 비밀번호 저장
    
    private DriverManager driverManager;
@@ -40,6 +40,24 @@ public class MySQLConnector {
 		   		+ "'" + _title + "',"
 		   		+ "'" + _comp + "',"
 		   		+ "'" + _day + "')");
+	   } catch(Exception ex){
+		   
+	   } finally {
+		   
+	   }
+   }
+   
+   public void insertWordToDB(String _word, String _count) {
+	   Statement stmt = null;
+	   ResultSet rs = null;
+	   try{
+		   stmt = conn.createStatement();
+		   stmt.execute("INSERT INTO `nc_counter_title_word`"
+		   		+ "(`idx`, `idx_title`, `idx_word`, `cnt`)"
+		   		+ "VALUES (NULL,"
+		   		+ "'1',"
+		   		+ "'" + _word + "',"
+		   		+ "'" + _count + "',");
 	   } catch(Exception ex){
 		   
 	   } finally {

@@ -6,12 +6,19 @@ import java.util.*;
 
 
 public class CountingWord {
-	public static final int N = 5;
+	public static final int N = 10;
+	// 수정일자 : 2016년 11월 9일 수요일
+	// 단어 제외 테이블 1차 확장
 	// 테스트용 단어 제외 테이블
 	private static String[] cancel = {"까지", "를" ,"을", "가화", "것",
 			"왜", "아", "어", "할", "에게", "곳", "했다", "했다가", "포토",
 			"포토뉴스", "못", "없었다", "없이", "충격", "알고보니", "경악",
-			"섹시"};
+			"섹시", "속보", "뉴스라인", "전", "차", "말", "고", "종합"};
+	
+	// 수정일자 : 2016년 11월 9일 수요일
+	// DB에 넣기 위한 string을 선언해봄
+	public List<String> word = new ArrayList<String>();
+	public List<Integer> count = new ArrayList<Integer>();
 	
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue( Map<K, V> map ){
 		//*** 빈도수 검사를 마친 단어를 사전순 정렬에서 빈도 순 정렬로 변환 ***//
@@ -47,7 +54,9 @@ public class CountingWord {
 	}
     
 	// 단어 분리, 빈도수 분석
-	public void splitAndAdd(String str){
+	// 수정일자 : 2016년 11월 9일 수요일
+	// App의 countedList에 넣기 위해 return하도록 수정해봄. (public void -> public List<String>)
+	public List<String> splitAndAdd(String str){
 		//*** 문자열을 공백으로 분리해 단어로 만들어 map에 저장한다. (이미 공백으로 분리되어 있지만 한번 더 시도)***//
 		//*** 생성한 단어는 사전순으로 정렬되며 이미 map에 있는 단어는 출현횟수를 갱신한다. ***//
 		//*** 마지막으로  저장한 모든 단어와 그 빈도수를 사전순으로 출력한다. ***//
@@ -62,7 +71,7 @@ public class CountingWord {
 		
 		// str을 공백을 기준으로 분리
 		String[] arr = str.split(" ");
-		StringBuffer buffer = new StringBuffer();
+		
 		// 사전순으로 정렬하기 위한 tree 선언
 		Map<String, Integer> map = new TreeMap<String, Integer>();
 		// 10개 단어를 파일에 쓸 때마다 줄을 바꾸기 위한 변수
@@ -88,12 +97,19 @@ public class CountingWord {
 			else{
 				lineCount++;
 				System.out.print(resultStr + " : " + map.get(resultStr) + "회   | ");
+				// 수정일자 : 2016년 11월 9일 수요일
+				// DB에 넣기 위한 string을 선언하고 넣어봄.
+				word.add(resultStr);
+				count.add(map.get(resultStr));
 				if(lineCount == 10){
 					System.out.println();
 					lineCount = 0;
 				}
 			}
         }
+		// 수정일자 : 2016년 11월 9일 수요일
+		// App의 countedList에 넣기 위해 return하도록 수정해봄. 
+		return word;
 	}
 
 	// 특수문자 제거(정규 표현식 이용)
@@ -143,7 +159,7 @@ public class CountingWord {
 	}
 	
 	// 결과를 파일로 출력 (추후 DB출력으로 변경)
-	public void writeOnFile() throws IOException{
+	public void writeOnDB() throws IOException{
 		//*** 콘솔에 출력된 단어와 빈도수를 *.txt파일에 옮겨 적는다. ***//
 		
 		//** external parameters **//
