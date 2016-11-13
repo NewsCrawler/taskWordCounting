@@ -6,7 +6,7 @@ import java.util.*;
 
 
 public class CountingWord {
-	public static final int N = 4;
+	public static final int N = 100;
 	// 수정일자 : 2016년 11월 9일 수요일
 	// 단어 제외 테이블 1차 확장
 	// 테스트용 단어 제외 테이블
@@ -31,6 +31,7 @@ public class CountingWord {
 	// DB에 넣기 위한 string을 선언해봄
 	public List<String> word = new ArrayList<String>();
 	public List<Integer> count = new ArrayList<Integer>();
+	public Map<String, Integer> map = new TreeMap<String, Integer>();
 	
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue( Map<K, V> map ){
 		//*** 빈도수 검사를 마친 단어를 사전순 정렬에서 빈도 순 정렬로 변환 ***//
@@ -65,11 +66,19 @@ public class CountingWord {
 	    return result;
 	}
     
+    
+    public List<String> newSplit(String str){
+    	String[] arr = str.split(" ");
+    	for(int i = 0; i < arr.length; i++){
+    		word.add(arr[i]);
+    	}
+		return word;
+    }
 	// 단어 분리, 빈도수 분석
 	// 수정일자 : 2016년 11월 9일 수요일
 	// App의 countedList에 넣기 위해 return하도록 수정해봄. (public void -> public List<String>)
 	public List<String> splitAndAdd(String str){
-		//*** 문자열을 공백으로 분리해 단어로 만들어 map에 저장한다. (이미 공백으로 분리되어 있지만 한번 더 시도)***//
+		//*** 문자열을 공백으로 분리해 단어로 만들어 map에 저장한다.***//
 		//*** 생성한 단어는 사전순으로 정렬되며 이미 map에 있는 단어는 출현횟수를 갱신한다. ***//
 		//*** 마지막으로  저장한 모든 단어와 그 빈도수를 사전순으로 출력한다. ***//
 		
@@ -85,23 +94,31 @@ public class CountingWord {
 		String[] arr = str.split(" ");
 		
 		// 사전순으로 정렬하기 위한 tree 선언
-		Map<String, Integer> map = new TreeMap<String, Integer>();
+
 		// 10개 단어를 파일에 쓸 때마다 줄을 바꾸기 위한 변수
 		int lineCount = 0;
 		
+		// 분리한 스트링의 끝까지 읽는다
 		for(int i=0; i<arr.length; i++){
+			// 분리한 단어가 맵 안에 있는 단어라면
             if(map.containsKey(arr[i])){
+            	// 그 단어의 값은 1이 추가됨
                 map.put(arr[i], map.get(arr[i])+1);
-            }else{
+            }
+            // 맵에 없었던 단어라면
+            else{
+            	// 맵에 추가하고 그 횟수는 1
                 map.put(arr[i], 1);
             }
         }// 더이상 처리할 단어가 없을때까지 반복
 		
 		// 사전순으로 정리된 단어를 빈도순서로 재정리
+		// DB에 넣기 위해서도 필요한 과정인가? 그렇지는 않아보인다.
 		map = sortByValue(map);
 		
 		// 결과를 콘솔에 출력하는 부분
 		// 빈도 N 이하의 단어는 출력하지 않는다.
+		// 이 콘솔에 출력하는 부분도 DB에 직접적으로 관여하는 걸로 보이지는 않는다.
 		for(String resultStr : map.keySet()){
 			if(map.get(resultStr) < N){
 				continue;
@@ -137,9 +154,7 @@ public class CountingWord {
 		//* 작성일자 : 2016년 11월 05일 토요일 *//
 		//* 최종 수정자 : 2015112088 김경민 *//
 		//* 최종 수정일 : 2016년 11월 07일 월요일 *//
-		
-		//Pattern namePattern = Pattern.compile("[가-힣]+.*");
-		
+
 		String match1 = "[^\u4E00-\u9FBF\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
 		str = str.replaceAll(match1, " ");
 		String match2 = "\\s{2,}";
