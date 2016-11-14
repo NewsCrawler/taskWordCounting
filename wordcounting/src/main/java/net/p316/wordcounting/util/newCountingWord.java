@@ -1,3 +1,4 @@
+// 새로 만들기 위해 생성한 클래스.... 그러나 의미 없다 제대로 돌아가버렸다!
 package net.p316.wordcounting.util;
 
 import java.io.FileWriter;

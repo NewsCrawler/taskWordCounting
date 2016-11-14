@@ -67,6 +67,7 @@ public class MySQLConnector {
 		   		+ "'" + idx_title + "',"
 		   		+ "'" + idx_word + "',"
 		   		+ "'" + cnt + "');");
+		   stmt.close();
 	   } catch(Exception ex){
 		   System.out.println("문제발생!");
 	   } finally {
