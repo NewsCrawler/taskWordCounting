@@ -59,5 +59,7 @@ public class App {
 		// SQLException: URLDecoder: Incomplete trailing escape (%) pattern
     	// 무슨 오류인가...
         System.out.println( "finished..." );
+        // db connection close
+        mycon.close();
     }
 }

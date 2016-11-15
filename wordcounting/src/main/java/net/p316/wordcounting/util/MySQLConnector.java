@@ -33,6 +33,11 @@ public class MySQLConnector {
 	   } catch(Exception ex){
 		   System.out.println("SQLException: " + ex.getMessage());
 	   }
+	   
+   }
+   
+   public void close(){
+	   if(conn != null){ try{ conn.close(); }catch(SQLException ex){} }
    }
    
    // DB삽입 테스트용
@@ -52,8 +57,9 @@ public class MySQLConnector {
 	   } catch(Exception ex){
 		   
 	   } finally {
-		   
-	   }
+			if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
+		}
    }
    
    public void insertWordToDB(int idx_title, int idx_word, int cnt) {
@@ -71,8 +77,9 @@ public class MySQLConnector {
 	   } catch(Exception ex){
 		   System.out.println("문제발생!");
 	   } finally {
-		   
-	   }
+			if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
+		}
    }
    
    // 쿼리 실행 테스트용
@@ -109,7 +116,10 @@ public class MySQLConnector {
 		   
 	   } catch(Exception ex){
 		   
-	   }
+	   } finally {
+			if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
+		}
    }
    
    // 단어을 DB에서 불러와 map에 저장(key : index, value : word)
@@ -132,6 +142,9 @@ public class MySQLConnector {
 		   
 	   } catch(Exception ex){
 		   
+	   } finally {
+			if (rs != null) try { rs.close(); } catch(SQLException ex) {}
+	        if (stmt != null) try { stmt.close(); } catch(SQLException ex) {}
 	   }
    }
 }
